@@ -52,6 +52,7 @@ android {
 
 dependencies {
 
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
     //Compose ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 

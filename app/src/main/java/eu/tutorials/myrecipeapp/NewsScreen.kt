@@ -15,9 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import eu.tutorials.myrecipeapp.Article
 import eu.tutorials.myrecipeapp.NewsCategory
+import eu.tutorials.myrecipeapp.ui.components.NewsTopAppBar
 
 @Composable
 fun NewsScreen(
@@ -26,44 +28,63 @@ fun NewsScreen(
     onTabSelected: (MainViewModel.Tab) -> Unit,
     selectedCategory: NewsCategory,
     onCategorySelected: (NewsCategory) -> Unit,
-    navigateToDetail: (Article) -> Unit
+    navigateToDetail: (Article) -> Unit,
+    navController: NavController  // Add this parameter
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        TabRow(selectedTabIndex = if (selectedTab == MainViewModel.Tab.TOP_NEWS) 0 else 1) {
-            Tab(
-                selected = selectedTab == MainViewModel.Tab.TOP_NEWS,
-                onClick = { onTabSelected(MainViewModel.Tab.TOP_NEWS) }
-            ) {
-                Text("Top News", modifier = Modifier.padding(16.dp))
-            }
-            Tab(
-                selected = selectedTab == MainViewModel.Tab.CATEGORIES,
-                onClick = { onTabSelected(MainViewModel.Tab.CATEGORIES) }
-            ) {
-                Text("Categories", modifier = Modifier.padding(16.dp))
-            }
-        }
-
-        if (selectedTab == MainViewModel.Tab.CATEGORIES) {
-            CategoryTabs(
-                selectedCategory = selectedCategory,
-                onCategorySelected = onCategorySelected
+    Scaffold(
+        topBar = {
+            // Add the TopAppBar here
+            NewsTopAppBar(
+                onSettingsClick = {
+                    navController.navigate(Screen.SettingsScreen.route)
+                }
             )
         }
+    ) { paddingValues ->
+        // Wrap your existing content in this Column
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)  // Use the padding from Scaffold
+        ) {
+            // Your existing TabRow code
+            TabRow(selectedTabIndex = if (selectedTab == MainViewModel.Tab.TOP_NEWS) 0 else 1) {
+                Tab(
+                    selected = selectedTab == MainViewModel.Tab.TOP_NEWS,
+                    onClick = { onTabSelected(MainViewModel.Tab.TOP_NEWS) }
+                ) {
+                    Text("Top News", modifier = Modifier.padding(16.dp))
+                }
+                Tab(
+                    selected = selectedTab == MainViewModel.Tab.CATEGORIES,
+                    onClick = { onTabSelected(MainViewModel.Tab.CATEGORIES) }
+                ) {
+                    Text("Categories", modifier = Modifier.padding(16.dp))
+                }
+            }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            when {
-                viewstate.loading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-                viewstate.error != null -> {
-                    Text(
-                        text = viewstate.error,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-                else -> {
-                    ArticlesList(articles = viewstate.articles, navigateToDetail = navigateToDetail)
+            // Rest of your existing NewsScreen content...
+            if (selectedTab == MainViewModel.Tab.CATEGORIES) {
+                CategoryTabs(
+                    selectedCategory = selectedCategory,
+                    onCategorySelected = onCategorySelected
+                )
+            }
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                when {
+                    viewstate.loading -> {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                    viewstate.error != null -> {
+                        Text(
+                            text = viewstate.error,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    else -> {
+                        ArticlesList(articles = viewstate.articles, navigateToDetail = navigateToDetail)
+                    }
                 }
             }
         }

@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import eu.tutorials.myrecipeapp.Article
+import eu.tutorials.myrecipeapp.ui.screens.SettingsScreen
 
 @Composable
 fun NewsApp(navController: NavHostController) {
@@ -26,7 +27,8 @@ fun NewsApp(navController: NavHostController) {
                 navigateToDetail = {
                     navController.currentBackStackEntry?.savedStateHandle?.set("article", it)
                     navController.navigate(Screen.DetailScreen.route)
-                }
+                },
+                navController = navController  // Add this parameter
             )
         }
         composable(route = Screen.DetailScreen.route) {
@@ -35,6 +37,9 @@ fun NewsApp(navController: NavHostController) {
             if (article != null) {
                 NewsDetailScreen(article = article)
             }
+        }
+        composable(route = Screen.SettingsScreen.route) {
+            SettingsScreen()
         }
     }
 }
