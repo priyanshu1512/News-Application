@@ -19,11 +19,10 @@ A modern Android news application built with Kotlin and Jetpack Compose that fet
 - Push Notifications for latest news updates using WorkManager
 
 ## Screenshots
-
-[s11]
-[s12]
-[s13]
-[s14]
+![App Screenshot](s11.png)
+![App Screenshot](s12.png)
+![App Screenshot](s13.png)
+![App Screenshot](s14.png)
 
 ## Tech Stack
 
