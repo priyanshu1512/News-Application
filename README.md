@@ -22,6 +22,8 @@ A modern Android news application built with Kotlin and Jetpack Compose that fet
 
 [s11]
 [s12]
+[s13]
+[s14]
 
 ## Tech Stack
 
